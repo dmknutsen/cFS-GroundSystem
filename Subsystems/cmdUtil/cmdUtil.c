@@ -253,9 +253,10 @@ void ProcessStringArgument(char *optarg, CommandData_t *CommandData) {
 ** Process a quad word (64-bit) argument
 */
 void ProcessDoubleArgument(char *optarg, CommandData_t *CommandData) {
-    double tempDouble;
+    long long tempDouble;
 
-    tempDouble = strtod(optarg, NULL);
+ /*   tempDouble = strtod(optarg, NULL);  */
+    tempDouble = strtoll(optarg, NULL,0);
 
     if (hostByteOrder != CommandData->Endian) {
         byteSwap((char*)&tempDouble, sizeof(tempDouble));
@@ -441,20 +442,8 @@ int main(int argc, char *argv[]) {
                 fprintf(stderr,"Command Code Argument: '%s' rejected. Number is too large.\n",optarg);
                 break;
             }
-            /* 
-            ** Shift the command code to the upper 8 bits of the word 
-            */
-	    tempShort <<= 8;
 
-            /*
-            ** Swap if needed 
-            */
-            if (hostByteOrder != CommandData.Endian) 
-            {
-               byteSwap((char*)&tempShort, sizeof(tempShort));
-            }
-
-            memcpy(&CommandData.PacketHdr[6], &tempShort, sizeof(tempShort));
+            CommandData.PacketHdr[6] = tempShort;
             CommandData.GotCmdCode = 1;
             break;
 
@@ -540,3 +529,4 @@ int main(int argc, char *argv[]) {
 
     return EXIT_SUCCESS;
 }
+

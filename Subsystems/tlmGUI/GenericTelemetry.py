@@ -48,6 +48,20 @@ class SubsystemTelemetry(QtGui.QDialog):
     def displayTelemetryItem(self, datagram, tlmIndex, labelField, valueField):
        if tlmItemIsValid[tlmIndex] == True:
           TlmField1 =   tlmItemFormat[tlmIndex]
+          print ('length datagram: %d' % len(datagram))
+#          print (''.join(format(x, '02x') for x in datagram))
+          print ( datagram.hex() )
+
+          print ( "Stream ID: %s" % datagram[0:2].hex() )
+          print ( "Sequence Word: %s" % datagram[2:4].hex() )
+          print ( "Packet Length Word: %s" % datagram[4:6].hex() )
+          print ( "Secondary Header: %s" % datagram[6:12].hex() )
+          print ( "Command Counter: %s" % datagram[16:17].hex() )
+          print ( "Command Error Counter: %s" % datagram[17:18].hex() )
+#          print ( "Packet Length Word: %s" % datagram[4:6].hex() )
+#          print ( "Packet Length Word: %s" % datagram[4:6].hex() )
+
+         # print (''.join(format(x, '02x') for x in datagram[1:4]))
           if TlmField1[:1] == "<":
              TlmField1 = TlmField1[1:]
           TlmField2 =   datagram[int(tlmItemStart[tlmIndex]):(int(tlmItemStart[tlmIndex]) + int(tlmItemSize[tlmIndex]))]
